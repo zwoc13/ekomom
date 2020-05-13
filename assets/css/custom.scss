@@ -1,0 +1,106 @@
+// Global Colors
+
+$link-color: #353535;
+$pink: #ede7e6;
+$light-pink: #fff9f9;
+$brown: #bca49f;
+$sand: #d3cfc4;
+$blue: #6c7c8e;
+$grey: #d3cfc4;
+$darker-pink: darken($pink, 10%);
+$transparent-brown: lighten($brown, 20%);
+
+// Global text settings
+
+$text-dark-brown: #9e7d7d;
+$text-black: #2e2e2e;
+$text-brown: #a88585;
+$text-red: #f14668;
+
+// Fonts and it families
+
+$comfortaa: 'Comfortaa', sans-serif;
+$roboto: 'Roboto', sans-serif;
+
+// Categories colors
+
+$category-one: #d3cfc4;
+$category-two: #cdc3c2;
+$category-three: #bca4a0;
+
+// Mixins
+
+@mixin background-opacity($color, $opacity: .3) {
+  $red: red($color);
+  $green: green($color);
+  $blue: blue($color);
+
+  background: $color;
+  background: rgba($red, $green, $blue, $opacity);
+}
+
+// Responsiveness
+
+$gap: 32px;
+$tablet: 769px;
+$desktop: 960px+(2 * $gap);
+$widescreen: 1152px+(2 * $gap);
+$fullhd: 1334px+(2 * $gap);
+
+
+@mixin mobile {
+  @media (max-width: #{$tablet}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$tablet + 1px}) and (max-width: #{$desktop}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$desktop + 1px} and (min-width: #{$widescreen})) {
+    @content;
+  }
+}
+
+@mixin widescreen {
+  @media (min-width: #{$widescreen + 1px}) and (max-width: #{$fullhd}) {
+    @content;
+  }
+}
+
+@mixin fullhd {
+  @media (min-width: #{$fullhd + 1px}) {
+    @content;
+  }
+}
+
+// Custom elements
+
+.block-title {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  color: $text-brown;
+  font-family: 'Comfortaa', 'Roboto', sans-serif;
+  padding-bottom: 60px;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.link {
+  text-decoration: underline;
+  color: blue;
+}
+
+.container {
+  @include mobile {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
