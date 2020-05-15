@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <form class="login-form column is-4" @submit.prevent="handleLogin">
+    <form class="login-form column is-4" @submit.prevent="handleLogin" v-if="!user">
       <div class="field">
         <div class="label">Email</div>
         <input 
@@ -29,10 +29,15 @@
         </div>
       </div>
     </form>
+    <div class="login-form column is-4" v-else>
+      <nuxt-link class="button button-primary" to="/admin/dashboard">Перейти в адмін панель</nuxt-link>
+    </div>
   </div>  
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
+
 export default {
   name: 'Login',
   layout: 'login_layout',
@@ -43,16 +48,18 @@ export default {
       error: '',
     }
   },
+  computed: {
+    ...mapState({
+      user: state => state.auth.user,
+    })
+  },
   methods: {
-    handleLogin() {
+    ...mapActions({
+      login: 'auth/login'
+    }),
+    async handleLogin() {
       const { email, password } = this
-      this.$axios.$post('/api/login', { email, password })
-        .then(response => {
-          this.$router.push('/admin/dashboard')
-        })
-        .catch(err => {
-          this.error = err.reason
-        })
+      await this.login({ email, password })
     }
   }
 }
