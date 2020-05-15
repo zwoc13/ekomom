@@ -75,6 +75,10 @@ module.exports = {
       '~assets/css/custom.scss',
     ]
   },
+  axios: {
+    baseURL: process.env.BASE_URL,
+    https: true,
+  },
   pwa: {
     manifest: {
       "name": "EkoMom App",
