@@ -49,7 +49,7 @@ const deleteCategory = async (req, res, next) => {
   const _id = req.params.category_id
 
   const category = await Category.findOne({ _id })
-  const subcategories = category.subcategories
+  const subcategories = await Category.find({ parent: _id })
 
   let subImages = []
   if (subcategories.length) {
