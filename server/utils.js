@@ -21,8 +21,9 @@ const getPath = (key) => `${process.env.AWS_PATH}${key}`
 
 const uploadImage = (bucketData) => {
   return new Promise((resolve, reject) => {
+    console.log(bucketData)
     s3.putObject(bucketData, (err) => {
-      if (err) reject(new Error('issue during file upload', bucketData))
+      if (err) reject(new Error('issue during file upload', err))
       const imagePath = getPath(bucketData.Key)
       resolve(imagePath)
     })
