@@ -94,6 +94,7 @@ export const actions = {
     }
 
     if (subcategory) {
+      const parentCategory = state.categories.find(c => c.url === category)
       const childCategory = state.categories.find(c => c.url === subcategory)
       await commit('setActiveSubcategory', childCategory)
       crumps.push({

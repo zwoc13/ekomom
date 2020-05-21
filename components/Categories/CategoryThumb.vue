@@ -17,7 +17,7 @@ import Picture from '@/components/Picture'
 
 export default {
   name: 'CategoryThumb',
-  props: [ 'category' ],
+  props: [ 'category', 'url' ],
   components: { Picture },
   computed: {
     alt() {
