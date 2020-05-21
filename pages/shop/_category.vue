@@ -38,9 +38,11 @@ export default {
     description() {
       const { 
         active: { 
-          category
+          category,
+          subcategory
         } 
       } = this
+      if (subcategory) return subcategory.description
       if (category) return category.description
     }
   },
