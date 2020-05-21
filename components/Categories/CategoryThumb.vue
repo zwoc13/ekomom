@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="`/shop/${category.url}`" class="category-thumb">
+  <nuxt-link :to="url || `/shop/${category.url}`" class="category-thumb">
     <div class="category-thumb-overlay">
       <div class="category-thumb-container">
         <p class="category-thumb-name">{{ category.name }}</p>
@@ -53,6 +53,7 @@ export default {
   &-name {
     background: white;
     width: 100%;
+    text-align: center;
     display: flex;
     background: white;
     font-size: 22px;

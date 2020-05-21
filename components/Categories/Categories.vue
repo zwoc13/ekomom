@@ -6,7 +6,8 @@
         <CategoryThumb 
           :key="category._id" 
           v-for="category in categories"
-          :category="category" 
+          :category="category"
+          :url="buildUrl(category)"
           class="column is-4 is-3-widescreen is-10-mobile is-offset-1-mobile"
         />
       </div>
@@ -21,6 +22,15 @@ export default {
   name: 'Categories',
   props: ['categories'],
   components: { CategoryThumb },
+  methods: {
+    buildUrl(category) {
+      if (!category.parent) return `/shop/${category.url}`
+      if (category.parent) {
+        const parent = this.categories.find(c => c._id === category.parent)
+        return `/shop/${parent.url}/${category.url}`
+      }
+    }
+  }
 }
 </script>
 

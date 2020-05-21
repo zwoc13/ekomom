@@ -43,6 +43,7 @@ export default {
     border-radius: 3px;
     z-index: 1;
     position: relative;
+    text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
