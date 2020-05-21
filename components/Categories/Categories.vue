@@ -2,7 +2,7 @@
   <div class="categories">
     <div class="container">
       <div class="block-title">Категорії</div>
-      <div class="columns">
+      <div class="columns wrap">
         <CategoryThumb 
           :key="category._id" 
           v-for="category in categories"
@@ -25,6 +25,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.wrap {
+  flex-wrap: wrap;
+}
 .categories {
   padding: 80px 0;
   background: $pink;

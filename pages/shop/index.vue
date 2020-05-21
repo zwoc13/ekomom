@@ -6,8 +6,10 @@
         <div class="column is-12">
           <nuxt-link class="categories-parent" :to="`/shop/${category.url}`">{{ category.name }}</nuxt-link>
         </div>
-        <div class="column is-2" :key="subcategory._id" v-for="subcategory in category.subcategories">
-          <CategoryThumbSmall class="categories-child" :category="subcategory"/>
+        <div class="categories-container columns">
+          <div class="column is-2" :key="subcategory._id" v-for="subcategory in category.subcategories">
+            <CategoryThumbSmall class="categories-child" :category="subcategory" :url="`/shop/${category.url}/${subcategory.url}`" />
+          </div>
         </div>
       </div>
     </div>
@@ -46,6 +48,10 @@ export default {
 .categories {
   padding: 3rem 0;
   background: $pink;
+  &-container {
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
   &-block {
     flex-direction: column;
   }

@@ -63,7 +63,8 @@ export default {
   }
   &-image {
     display: flex;
-    max-height: 320px;
+    max-height: 280px;
+    width: 100%;
     @include mobile {
       overflow: hidden;
     }

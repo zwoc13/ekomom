@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link class="category-thumb" :to="`/shop/${category.url}`">
+  <nuxt-link class="category-thumb" :to="url || `/shop/${category.url}`">
     <picture class="category-thumb-image" v-on="$listeners">
       <source :srcset="category.webp" type="image/webp" />
       <img class="category-thumb-fallback" :src="category.jpeg" :alt="category.name" /> 
@@ -13,14 +13,16 @@
 <script>
 export default {
   name: 'CategoryThumbSmall',
-  props: ['category'],
+  props: ['category', 'url'],
 }
 </script>
 
 <style lang="scss" scoped>
 .category-thumb {
-  padding: 5rem 3rem;
+  height: 15rem;
+  padding: 0 3rem;
   background: $darker-pink;
+  box-shadow: 0 0 10px 4px $darker-pink;
   position: relative;
   overflow: hidden;
   display: flex;
