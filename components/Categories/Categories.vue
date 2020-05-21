@@ -5,9 +5,9 @@
       <div class="columns wrap">
         <CategoryThumb 
           :key="category._id" 
-          v-for="category in categories"
+          v-for="category in parents"
           :category="category"
-          :url="buildUrl(category)"
+          :url="`/shop/${category.url}`"
           class="column is-4 is-3-widescreen is-10-mobile is-offset-1-mobile"
         />
       </div>
@@ -22,15 +22,13 @@ export default {
   name: 'Categories',
   props: ['categories'],
   components: { CategoryThumb },
-  methods: {
-    buildUrl(category) {
-      if (!category.parent) return `/shop/${category.url}`
-      if (category.parent) {
-        const parent = this.categories.find(c => c._id === category.parent)
-        return `/shop/${parent.url}/${category.url}`
-      }
-    }
-  }
+  computed: {
+    parents() {
+      const categories = this.categories
+      const parents = categories.filter(c => !c.parent)
+      return parents
+    },
+  },
 }
 </script>
 

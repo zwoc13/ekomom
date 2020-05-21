@@ -50,7 +50,6 @@ export default {
   background: $pink;
   &-container {
     flex-wrap: wrap;
-    margin-top: 1.5rem;
   }
   &-block {
     flex-direction: column;
@@ -61,6 +60,7 @@ export default {
     font-weight: bold;
     text-transform: uppercase;
     color: $text-brown;
+    margin: 2.5rem 1rem;
     align-items: center;
     &:after {
       display: flex;
