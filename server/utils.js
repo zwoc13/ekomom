@@ -1,6 +1,9 @@
 const AWS_BUCKET = process.env.AWS_BUCKET
 const AWS = require('aws-sdk')
-const s3 = new AWS.S3()
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_KEY,
+  secretAccessKey: process.env.AWS_SECRET,
+})
 const sharp = require('sharp')
 
 const randomId = () => {
@@ -21,7 +24,6 @@ const getPath = (key) => `${process.env.AWS_PATH}${key}`
 
 const uploadImage = (bucketData) => {
   return new Promise((resolve, reject) => {
-    console.log(bucketData)
     s3.putObject(bucketData, (err) => {
       if (err) reject(err)
       const imagePath = getPath(bucketData.Key)
