@@ -23,7 +23,7 @@ const uploadImage = (bucketData) => {
   return new Promise((resolve, reject) => {
     console.log(bucketData)
     s3.putObject(bucketData, (err) => {
-      if (err) reject(new Error('issue during file upload', err))
+      if (err) reject(err)
       const imagePath = getPath(bucketData.Key)
       resolve(imagePath)
     })
