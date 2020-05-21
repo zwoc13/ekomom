@@ -1,6 +1,6 @@
 <template>
   <nuxt-link :to="`/shop/${category.url}`" class="category-thumb">
-    <div class="category-thumb-overlay" :style='{ background: randomColor }'>
+    <div class="category-thumb-overlay">
       <div class="category-thumb-container">
         <p class="category-thumb-name">{{ category.name }}</p>
         <picture class="category-thumb-image" v-on="$listeners">
@@ -20,11 +20,6 @@ export default {
   props: [ 'category' ],
   components: { Picture },
   computed: {
-    randomColor() {
-      const colors = [ '#d3cfc4', '#cdc3c2', '#bca4a0' ]
-      const randomized = colors[Math.floor(Math.random() * colors.length)]
-      return randomized
-    },
     alt() {
       return `${this.category.name}. ${this.category.description}`
     }
@@ -45,6 +40,7 @@ export default {
     justify-content: center;
     height: 440px;
     padding: 40px;
+    background-color: #d3cfc4;
     @include mobile {
       padding: 10px;
     }
