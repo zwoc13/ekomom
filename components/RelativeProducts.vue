@@ -1,8 +1,8 @@
 <template>
   <div class="relative">
     <h3 class="relative-title">Схожі товари</h3>
-    <div class="columns">
-      <ProductThumb :key="product._id" v-for="product in products" :thumb="product" class="column is-3" />
+    <div class="columns relative-wrap">
+      <ProductThumb :key="product._id" v-for="product in products" :thumb="product" class="column is-2" />
     </div>
   </div>
 </template>
@@ -28,6 +28,9 @@ export default {
     font-weight: bolder;
     font-family: $comfortaa;
     margin-bottom: 2rem;
+  }
+  &-wrap {
+    flex-wrap: wrap;
   }
 }
 </style>

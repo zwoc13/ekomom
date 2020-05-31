@@ -109,24 +109,25 @@ const getRelativeProducts = async (req, res, next) => {
   const _id = req.params.product_id
   
   const product = await Product.findOne({ _id })
-  const { category, price, discount } = product 
-  const priceLimits = {
-    min: price - 200,
-    max: price + 200,
+  const { category: productCategory } = product 
+  const category = await Category.findOne({ _id: productCategory })
+  const categoriesList = [ productCategory ]
+  if (category.parent) {
+    const siblings = await Category.find({ parent: category.parent })
+    const ids = siblings.map(sibling => sibling._id)
+    ids.forEach(id => {
+      categoriesList.push(id)
+    })
   }
-  const discountLimits = {
-    min: discount - 200,
-    max: discount + 200,
-  }
-  
-  const productsByCategory = await Product.find({ _id: { $ne: _id }, category }).limit(2)
-  const productsByPrice = await Product.find({ _id: { $ne: _id }, price: { $gte: priceLimits.min, $lte: priceLimits.max } }).limit(2)
-  const productsWithDiscount = await Product.find({ _id: { $ne: _id }, discount: { $gte: discountLimits.min, $lte: discountLimits.max } }).limit(2)
 
-  const fetchedProducts = [ ...productsByCategory, ...productsByPrice, ...productsWithDiscount ]
+  const products = await Product.find({ 
+    _id: { $ne: _id }, 
+    category: { $in: categoriesList }, 
+    qnt: { $gte: 1 } 
+  }).limit(6)
 
   return res.json({
-    products: fetchedProducts
+    products,
   })
 }
 

@@ -63,15 +63,15 @@ export default ({
     },
     deleteFabric(forItem, what) {
       const { fabrics } = this.product
-      const filteredFabrics = fabrics.filter(fabric => fabric.forItem === forItem && fabric.what !== what)
-
-      this.product.fabrics = filteredFabrics
+      const index = fabrics.findIndex(fabric => fabric.forItem === forItem && fabric.what === what)
+      
+      fabrics.splice(index, 1)
     },
     deleteFilling(forItem, what) {
       const { fillings } = this.product
-      const filteredFillings = fillings.filter(filling => filling.forItem === forItem && filling.what !== what)
-
-      this.product.fillings = filteredFillings
+      const index = fillings.findIndex(filling => filling.forItem === forItem && filling.what === what)
+      
+      fillings.splice(index, 1)
     }
   },
 })

@@ -16,6 +16,8 @@ export default {
 .picture {
   display: flex;
   &-fallback {
+    height: auto;
+    width: auto;
     @include mobile {
       object-fit: contain;
     }

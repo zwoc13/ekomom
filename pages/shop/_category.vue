@@ -58,6 +58,7 @@ export default {
     margin: 30px 0;
     &-list {
       border-bottom: 1px solid $grey;
+      flex-wrap: wrap;
     }
   }
   &-category-description {

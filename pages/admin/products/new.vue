@@ -45,6 +45,9 @@
                   <button class="delete is-small" @click="deleteItem(item.item)"></button>
                 </div>
               </div>
+              <div class="tags-fast">
+                <div class="tags-fast-line" :key="tag.item + ' ' + tag.size + ' ' + tag.qnt" v-for="tag in fastItems" @click="addItemFast(tag)">{{ tag.item }} ({{tag.qnt}} шт.) - {{tag.size}} см</div>
+              </div>
               <input type="text" class="input mini-form-input" v-model="newItem.item" placeholder="Назва" />
               <input type="number" class="input mini-form-input" v-model="newItem.qnt" placeholder="Кількість" />
               <input type="text" class="input mini-form-input" v-model="newItem.size" placeholder="Розмір (напр. 20х20)" />
@@ -59,7 +62,11 @@
                   <button class="delete is-small" @click.prevent="deleteFabric(fabric.forItem, fabric.what)"></button>
                 </div>
               </div>
-              <input type="text" class="input" v-model="newFabric.forItem" placeholder="Елемент" />
+              <div class="select mini-form-input is-fullwidth">
+                <select v-model="newFabric.forItem">
+                  <option :key="item.item" v-for="item in product.items">{{ item.item }}</option>
+                </select>
+              </div>
               <div class="select mini-form-input is-fullwidth">
                 <select v-model="newFabric.what">
                   <option :key="fabric._id" v-for="fabric in fabrics">{{ fabric.name }}</option>
@@ -76,7 +83,11 @@
                   <button class="delete is-small" @click.prevent="deleteFilling(filling.forItem, filling.what)"></button>
                 </div>
               </div>
-              <input type="text" class="input mini-form-input" v-model="newFilling.forItem" placeholder="Елемент" />
+              <div class="select mini-form-input is-fullwidth">
+                <select v-model="newFilling.forItem">
+                  <option :key="item.item" v-for="item in product.items">{{ item.item }}</option>
+                </select>
+              </div>
               <div class="select mini-form-input is-fullwidth">
                 <select v-model="newFilling.what">
                   <option :key="filling._id" v-for="filling in fillings">{{ filling.name }}</option>
@@ -140,6 +151,15 @@ export default {
         discount: 0,
         photos: [],
       },
+      fastItems: [
+        { qnt: 1, item: 'Плед', size: '100x80' },
+        { qnt: 1, item: 'Вкладиш', size: '100x80' },
+        { qnt: 8, item: 'Бортики-подушки', size: '30x30' },
+        { qnt: 12, item: 'Бортики-подушки', size: '30x30' },
+        { qnt: 1, item: 'Кокон', size: '100x75' },
+        { qnt: 1, item: 'Бортик-коса', size: '120x20' },
+        { qnt: 1, item: 'Простинка', size: '120x60x10' },
+      ]
     }
   },
   computed: {
@@ -155,7 +175,7 @@ export default {
         })
         return formattedCategories
       },
-    })
+    }),
   },
   async asyncData(ctx) {
     const { fillings } = await ctx.$axios.$get('/api/fillings')
@@ -178,6 +198,20 @@ export default {
     }
   },
   methods: {
+    items() {
+      const product = this.product
+      const items = product.items
+      const itemsList = items.map(item => item.item)
+      return itemsList
+    },
+    addItemFast(tag) {
+      const { item, qnt, size } = tag
+      this.product.items.push({
+        item,
+        qnt,
+        size,
+      })
+    },
     removePhoto(path) {
       const filteredPhotos = this.product.photos.filter(photo => photo !== path)
       this.product.photos = filteredPhotos
@@ -217,11 +251,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tags {
+  &-fast {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    &-line {
+      font-size: 12px;
+      color: $blue;
+      border-bottom: 1px dashed $blue;
+      cursor: pointer;
+      margin-bottom: .2rem;
+    }
+  }
+}
 .form {
   flex-wrap: wrap;
 }
 .tags-container {
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.tag {
+  margin-bottom: 5px;
 }
 .mini-form {
   &-input,

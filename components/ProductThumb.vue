@@ -60,6 +60,7 @@ export default {
     z-index: 1;
   }  
   &-image {
+    min-height: 100%;
     @include mobile {
       max-height: 300px;
       object-fit: contain;
@@ -72,7 +73,7 @@ export default {
     position: relative;
     max-height: 100%;
     overflow: hidden;
-    min-height: 275px;
+    height: 300px;
     display: flex;
     align-items: center;
     @include mobile {

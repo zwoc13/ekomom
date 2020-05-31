@@ -40,7 +40,7 @@
           <p class="product-items-group-title">Що входить в комплект</p>
           <div class="product-items-tags-container">
             <div 
-              :key="el.size" 
+              :key="el.size + ' ' + el.qnt"
               v-for="el in product.items" 
               class="tag is-light is-medium">
               {{ el.item }} ({{ el.qnt }} шт.) — {{ el.size }} см
@@ -219,8 +219,12 @@ export default {
   margin-bottom: 6rem;
   &-buttons {
     margin-top: 30px;
+    width: 50%;
     display: flex;
     flex-direction: column;
+    @include mobile {
+      width: 100%;
+    }
   }
   &-cart {
     background: $brown;
@@ -272,7 +276,7 @@ export default {
   &-items-group {
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     &-title {
       font-size: 16px;
       font-weight: 500;
