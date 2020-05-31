@@ -18,7 +18,7 @@
               <tbody>
                 <tr :key="product._id" v-for="product in products">
                   <td>{{ product.name }}</td>
-                  <td :class="{ 'is-danger': category(product.category) === 'Missing' }">{{ category(product.category) }}</td>
+                  <td>{{ category(product.category) }}</td>
                   <td>{{ product.price }}</td>
                   <td>{{ product.discount }}</td>
                   <td><nuxt-link :to="`/admin/products/edit/${product._id}`" >Редагувати</nuxt-link></td>
@@ -42,6 +42,7 @@
 
 <script>
 import ProductMixin from '@/mixins/product'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ProductsIndex',
@@ -53,13 +54,16 @@ export default {
       products: [],
     }
   },
+  computed: {
+    ...mapState({
+      categories: state => state.shop.categories
+    })
+  },
   async asyncData(ctx) {
     const { products } = await ctx.$axios.$get('/api/products')
-    const { categories } = await ctx.$axios.$get('/api/categories')
 
     return {
       products,
-      categories,
     }
   },
   methods: {
@@ -69,10 +73,8 @@ export default {
     },
     category(id) {
       const { categories } = this
-      const subcategories = categories.map(category => category.subcategories)
-      const list = [].concat(...subcategories)
-      const category = list.find(item => item._id === id)
-      return category && category.name || 'Missing'
+      const category = categories.find(c => c._id === id)
+      return category.name || 'Missing'
     },
   }
 }

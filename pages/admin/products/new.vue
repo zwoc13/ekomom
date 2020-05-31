@@ -17,7 +17,10 @@
               <label class="label">Категорія</label>
               <div class="select is-fullwidth">
                 <select v-model="product.category">
-                  <option :key="subcategory._id" v-for="subcategory in subcategories" :value="subcategory._id">{{ subcategory.name }}</option>
+                  <optgroup :key="category._id" v-for="category in categories" :value="category._id" :label="category.name">
+                    <option :value="category._id">{{ category.name }}</option>
+                    <option :key="subcategory._id" v-for="subcategory in category.subcategories" :value="subcategory._id">{{ subcategory.name }}</option>
+                  </optgroup>
                 </select>
               </div>
             </div>
@@ -116,6 +119,7 @@
 
 <script>
 import ProductMixin from '@/mixins/product'
+import { mapState } from 'vuex'
 
 export default {
   name: 'AdminCreateProduct',
@@ -138,21 +142,31 @@ export default {
       },
     }
   },
+  computed: {
+    ...mapState({
+      categories: state => {
+        const parents = state.shop.categories.filter(c => !c.parent)
+        const formattedCategories = parents.map(parent => {
+          const id = parent._id
+          return {
+            ...parent,
+            subcategories: state.shop.categories.filter(c => c.parent === id)
+          }
+        })
+        return formattedCategories
+      },
+    })
+  },
   async asyncData(ctx) {
-    const { categories } = await ctx.$axios.$get('/api/categories')
     const { fillings } = await ctx.$axios.$get('/api/fillings')
     const { fabrics } = await ctx.$axios.$get('/api/fabrics')
 
-    const subcategories = categories.filter(category => category.parent)
-
     return {
-      subcategories,
       fillings,
       fabrics,
       product: {
         name: '',
         description: '', 
-        category: subcategories[0]._id,
         fillings: [],
         items: [],
         fabrics: [],

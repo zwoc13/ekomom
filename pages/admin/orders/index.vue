@@ -68,7 +68,6 @@ export default {
   },
   async asyncData({ $axios }) {
     const { orders } = await $axios.$get('/api/orders')
-    console.log(orders)
 
     return {
       orders,
