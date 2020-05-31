@@ -108,12 +108,8 @@ export const actions = {
       const { product } = await this.$axios.$get(`/api/products/${product_id}`)
       const name = product.name
       const categoryId = product.category
-      const parentCategory = state.categories.find(c => {
-        const { subcategories } = c
-        const rightSubcategory = subcategories.find(s => s._id === categoryId)
-        return rightSubcategory
-      })
-      const childCategory = parentCategory.subcategories.find(s => s._id === categoryId)
+      const childCategory = state.categories.find(c => c._id === categoryId)
+      const parentCategory = state.categories.find(c => childCategory.parent === c._id)
 
       const productCrumps = [{
         title: 'Магазин',

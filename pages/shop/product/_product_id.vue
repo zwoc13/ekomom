@@ -38,31 +38,37 @@
         </div>
         <div class="product-items-group">
           <p class="product-items-group-title">Що входить в комплект</p>
-          <div 
-            :key="el.size" 
-            v-for="el in product.items" 
-            class="tag is-light is-medium">
-            {{ el.item }} ({{ el.qnt }} шт.) — {{ el.size }} см
+          <div class="product-items-tags-container">
+            <div 
+              :key="el.size" 
+              v-for="el in product.items" 
+              class="tag is-light is-medium">
+              {{ el.item }} ({{ el.qnt }} шт.) — {{ el.size }} см
+            </div>
           </div>
         </div>
         <div class="product-items-group">
           <p class="product-items-group-title">Тканини</p>
-          <div
-            :key="fabric"
-            v-for="fabric in fabrics"
-            class="product-tag tag is-light is-medium"
-          >
-            {{ fabric }}
+          <div class="product-items-tags-container">
+            <div
+              :key="fabric"
+              v-for="fabric in fabrics"
+              class="product-tag tag is-light is-medium"
+            >
+              {{ fabric }}
+            </div>
           </div>
         </div>
         <div class="product-items-group">
           <p class="product-items-group-title">Наповнення</p>
-          <div
-            :key="filling"
-            v-for="filling in fillings"
-            class="product-tag tag is-light is-medium"
-          >
-            {{ filling }}
+          <div class="product-items-tags-container">
+            <div
+              :key="filling"
+              v-for="filling in fillings"
+              class="product-tag tag is-light is-medium"
+            >
+              {{ filling }}
+            </div>
           </div>
         </div>
         <div class="product-price" v-if="product.qnt > 0">
@@ -250,6 +256,18 @@ export default {
     color: #999;
     font-weight: normal;
     margin-bottom: 20px;
+  }
+  &-items {
+    &-tags-container {
+      display: flex;
+      flex-direction: column;
+      flex: 0 0 100%;
+      align-items: flex-start;
+      .tag {
+        justify-content: flex-start;
+        margin-bottom: .4rem;
+      }
+    }
   }
   &-items-group {
     display: flex;
