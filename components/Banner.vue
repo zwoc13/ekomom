@@ -4,7 +4,7 @@
       <div class="columns banner-columns">
         <div class="column is-4 is-full-mobile">
           <div class="banner-title">новий Асортимент літніх пледів</div>
-          <div class="banner-description">Ми раді повідомити Вам, щоб ми працюємо над розширенням літнього асортименту та раді представити Вашій увазі муслинові пледи</div>
+          <div class="banner-description">Ми раді повідомити Вам, що ми працюємо над розширенням літнього асортименту та раді представити Вашій увазі муслинові пледи</div>
           <nuxt-link to="/shop/pledi/muslin" class="button is-medium banner-cta">Перейти</nuxt-link>
         </div>
         <div class="column is-8 banner-relative">
