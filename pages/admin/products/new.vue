@@ -131,6 +131,7 @@
 
 <script>
 import ProductMixin from '@/mixins/product'
+import Loader from '@/components/Loader'
 import { mapState } from 'vuex'
 
 export default {
@@ -138,6 +139,7 @@ export default {
   layout: 'admin',
   middleware: 'verified',
   mixins: [ ProductMixin ],
+  components: { Loader },
   data() {
     return {
       isLoading: false,

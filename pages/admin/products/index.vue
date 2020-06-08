@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <Loader :show="isLoading" />
     <div class="columns">
       <div class="column is-12">
         <div class="box">
@@ -42,6 +43,7 @@
 
 <script>
 import ProductMixin from '@/mixins/product'
+import Loader from '@/components/Loader'
 import { mapState } from 'vuex'
 
 export default {
@@ -49,8 +51,10 @@ export default {
   layout: 'admin',
   mixins: [ ProductMixin ],
   middleware: 'verified',
+  components: { Loader },
   data() {
     return {
+      isLoading: false,
       products: [],
     }
   },
@@ -68,8 +72,12 @@ export default {
   },
   methods: {
     async deleteProduct(id) {
+      this.isLoading = true
+
       const { products } = await this.$axios.$delete(`/api/products/${id}`)
       this.products = products
+
+      this.isLoading = false
     },
     category(id) {
       const { categories } = this

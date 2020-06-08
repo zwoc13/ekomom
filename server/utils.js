@@ -73,7 +73,9 @@ const deleteImage = (fileName) => {
 
 const deleteImages = async (array) => {
   const imagesPromises = array.map(async (image) => {
-    return await deleteImage(image)
+    const { webp, jpeg } = image
+    await deleteImage(webp)
+    return await deleteImage(jpeg)
   })
 
   const deletedResult = await Promise.all(imagesPromises)

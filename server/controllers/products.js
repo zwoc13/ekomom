@@ -173,7 +173,7 @@ const deleteProduct = async (req, res, next) => {
   const products = await Product.find()
 
   return res.json({
-    product
+    products
   })
 }
 
