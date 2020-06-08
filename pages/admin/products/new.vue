@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <Loader :show="isLoading" />
     <div class="columns">
       <div class="column is-12">
         <div class="box">
@@ -139,6 +140,7 @@ export default {
   mixins: [ ProductMixin ],
   data() {
     return {
+      isLoading: false,
       product: {
         name: '',
         description: '',
@@ -243,7 +245,12 @@ export default {
       } = this.product
 
       if (items.length > 0 && photos.length > 0) {
+        this.isLoading = true
+
         const products = await this.$axios.$post('/api/products', { ...this.product })
+
+        this.isLoading = false
+        this.$router.replace('/admin/products')
       }
     },
   }

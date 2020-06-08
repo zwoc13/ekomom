@@ -105,6 +105,7 @@ export default {
     align-items: center;
   }
   &-title {
+    text-align: center;
     font-size: 18px;
     color: $text-black;
   }

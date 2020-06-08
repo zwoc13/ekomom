@@ -10,6 +10,7 @@
 import Banner from '@/components/Banner'
 import NewProducts from '@/components/NewProducts'
 import Categories from '@/components/Categories/Categories'
+import { mapState } from 'vuex'
 
 export default {
   name: 'IndexPage',
@@ -18,13 +19,13 @@ export default {
     NewProducts,
     Categories,
   },
-  async asyncData(ctx) {
-    const { products: newProducts } = await ctx.$axios.$get('/api/products/new')
-    const { categories } = await ctx.$axios.$get('/api/categories')
+  async asyncData({ $axios }) {
+    const { products: newProducts } = await $axios.$get('/api/products/new')
+    const { categories } = await $axios.$get('/api/categories')
     
     return {
       newProducts,
-      categories
+      categories,
     }
   }
 }

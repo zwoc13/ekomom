@@ -40,7 +40,7 @@
           <p class="product-items-group-title">Що входить в комплект</p>
           <div class="product-items-tags-container">
             <div 
-              :key="el.size + ' ' + el.qnt"
+              :key="el.size + ' ' + el.qnt + ' ' + el.item"
               v-for="el in product.items" 
               class="tag is-light is-medium">
               {{ el.item }} ({{ el.qnt }} шт.) — {{ el.size }} см
@@ -233,6 +233,7 @@ export default {
   &-check {
     background: $blue;
     color: white;
+    width: 100%;
   }
   &-buy {
     background: $blue;

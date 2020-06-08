@@ -24,7 +24,7 @@ export default {
   components: { CategoryThumb },
   computed: {
     parents() {
-      const categories = this.categories
+      const categories = this.$props.categories
       const parents = categories.filter(c => !c.parent)
       return parents
     },

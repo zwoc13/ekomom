@@ -71,6 +71,7 @@ async function start () {
     require('./routes/tasks'),
     require('./routes/products'),
     require('./routes/telegram'),
+    require('./routes/seo'),
   ])
 
   // Give nuxt middleware to express
