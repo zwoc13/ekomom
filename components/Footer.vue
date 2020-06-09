@@ -12,10 +12,10 @@
         <a class="footer-social-link" href="https://www.instagram.com/eko_mom/">
           <img src="@/assets/images/insta.svg" />
         </a>
-        <a class="footer-social-link" href="https://www.instagram.com/eko_mom/">
+        <!-- <a class="footer-social-link" href="https://www.instagram.com/eko_mom/">
           <img src="@/assets/images/telegram.svg" />
-        </a>
-        <a class="footer-social-link" href="https://www.instagram.com/eko_mom/">
+        </a> -->
+        <a class="footer-social-link" href="https://www.facebook.com/eko.mom.km/">
           <img src="@/assets/images/fb.svg" />
         </a>
       </div>

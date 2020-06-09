@@ -42,6 +42,7 @@ module.exports = {
   buildModules: [
   ],
   modules: [
+    '@nuxtjs/sitemap',
     '@nuxtjs/style-resources',
     '@nuxtjs/bulma',
     '@nuxtjs/axios',
