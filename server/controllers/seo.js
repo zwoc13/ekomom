@@ -12,11 +12,12 @@ const collectRoutes = async (req, res, next) => {
   const parentUrls = parentCategories.map(category => {
     return `/shop/${category.url}`
   })
-  const childrenUrls = childrenCategories.map(category => {
-    const parent = parentCategories.find(parent => parent._id === category.parent)
+  const childrenPromises = childrenCategories.map(async category => {
+    const parent = await Category.findOne({ _id: category.parent })
     const parentUrl = parent.url 
     return `/shop/${parentUrl}/${category.url}`
   })
+  const childrenUrls = await Promise.all(childrenPromises)
 
   const products = await Product.find()
   const productUrls = products.map(product => {
@@ -24,6 +25,7 @@ const collectRoutes = async (req, res, next) => {
   })
 
   const urlsList = [ ...staticRoutes, ...parentUrls, ...childrenUrls, ...productUrls ]
+  console.log(urlsList)
   return urlsList
 }
 
