@@ -83,7 +83,7 @@
           <button class="button product-cart is-medium" v-if="!isAdded" @click="addToCart(product)">Додати в корзину</button>
           <button class="button product-buy is-medium" v-if="!isAdded" @click="fastBuy(product)">Купити в один клік</button>
         </div>
-        <div class="product-buttons" v-if="product.qnt == 0">
+        <div class="product-buttons product-buttons-wide" v-if="product.qnt == 0">
           <button class="button product-check is-medium" @click="openModal">Уточнити можливість повторного пошиву</button>
         </div>
       </div>
@@ -198,7 +198,28 @@ export default {
       fabrics: uniqueFabrics,
       relativeProducts,
     }
-  }
+  },
+  head() {
+    const product = this.product
+    const status = product.qnt === 0 ? 'Під замовлення' : 'В наявності'
+    const title = `${product.name}`
+    const description = `${product.name}. ${product.description} ${status}`
+    return {
+      title,
+      meta: [
+        { name: 'description', content: description },
+        { property: 'og:locale', content: "uk_UA" },
+        { property: "og:type", content: "website" },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: "https://ekomom.com//" },
+        { property: "og:site_name", content: "EkoMom" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+      ]
+    }
+  },
 }
 </script>
 
@@ -222,6 +243,9 @@ export default {
     width: 50%;
     display: flex;
     flex-direction: column;
+    &-wide {
+      width: 100%;
+    }
     @include mobile {
       width: 100%;
     }

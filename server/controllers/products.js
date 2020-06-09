@@ -122,8 +122,7 @@ const getRelativeProducts = async (req, res, next) => {
 
   const products = await Product.find({ 
     _id: { $ne: _id }, 
-    category: { $in: categoriesList }, 
-    qnt: { $gte: 1 } 
+    category: { $in: categoriesList },
   }).limit(6)
 
   return res.json({

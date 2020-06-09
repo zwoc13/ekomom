@@ -1,6 +1,6 @@
 <template>
   <nuxt-link :to="`/shop/product/${thumb._id}`" class="product-thumb">
-    <div class="product-thumb-ribbon" v-if="thumb.qnt == 0">Немає в наявності</div>
+    <div class="product-thumb-ribbon" v-if="thumb.qnt == 0">під замовлення</div>
     <div class="product-thumb-image-container">
       <Picture class="product-thumb-image" :image="pickFirstImage(thumb.photos)" :alt="thumb.name + '. ' + thumb.description" />
       <div class="product-thumb-overlay">
@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="product-thumb-text-container">
-      <Price :price="thumb.price" :discount="thumb.discount" v-if="thumb.qnt > 0" />
+      <Price :price="thumb.price" :discount="thumb.discount" />
       <h5 class="product-thumb-title">{{ thumb.name }}</h5>
     </div>
   </nuxt-link>
@@ -50,8 +50,8 @@ export default {
   }
   &-ribbon {
     position: absolute;
-    top: 15px;
-    right: -3px;
+    top: 25px;
+    right: 0;
     background: $blue;
     font-size: 10px;
     color: white;

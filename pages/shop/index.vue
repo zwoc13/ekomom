@@ -27,6 +27,7 @@ export default {
   },
   computed: {
     ...mapState({
+      categoriesList: state => state.shop.categories,
       categories: state => {
         const list = state.shop.categories
         const parents = list.filter(category => !category.parent)
@@ -40,7 +41,27 @@ export default {
         return categories
       }
     })
-  }
+  },
+  head() {
+    const title = 'EkoMom - інтернет-магазин дитячого тектилю'
+    const categoriesList = this.categoriesList.map(category => category.name).join(', ')
+    const description = `Інтернет-магазин дитячого текстилю. Обирайте категорію товару на Ваш смак: ${categoriesList}`
+    return {
+      title,
+      meta: [
+        { name: 'description', content: description },
+        { property: 'og:locale', content: "uk_UA" },
+        { property: "og:type", content: "website" },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: "https://ekomom.com/shop/" },
+        { property: "og:site_name", content: "EkoMom" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+      ]
+    }
+  },
 }
 </script>
 
