@@ -25,8 +25,7 @@ const collectRoutes = async (req, res, next) => {
   })
 
   const urlsList = [ ...staticRoutes, ...parentUrls, ...childrenUrls, ...productUrls ]
-  console.log(urlsList)
-  return urlsList
+  return res.send(urlsList)
 }
 
 module.exports = {
