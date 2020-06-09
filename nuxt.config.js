@@ -2,7 +2,7 @@ require('dotenv').config({ path: '.env' })
 const imageminMozjpeg = require('imagemin-mozjpeg')
 const ImageminPlugin = require('imagemin-webpack-plugin').default
 const isDev = process.env.NODE_ENV !== 'production'
-const { getRoutes } = require('./utils/routes')
+const getRoutes = require('./utils/routes')
 
 module.exports = {
   mode: 'universal',
