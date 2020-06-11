@@ -1,7 +1,10 @@
 <template>
   <div class="gallery">
     <div class="gallery-big">
-      <Picture :image="activeImage" class="gallery-big-image" />
+      <picture class="gallery-big-picture">
+        <source :srcset="activeImage.webp" class="gallery-big-picture-webp" type="image/webp" />
+        <img :src="activeImage.jpeg" class="gallery-big-picture-fallback" /> 
+      </picture>
     </div>
     <div class="gallery-small">
       <div 
@@ -11,23 +14,18 @@
         :class="{ 'gallery-small-container-active': isActiveImage(photo) }"
         @click="setActiveImage(photo)"
       >
-        <Picture
-          :image="photo" 
-          class="gallery-small-image"
-        />
+        <picture class="gallery-small-picture">
+          <source :srcset="photo.webp" class="gallery-small-picture-webp" type="image/webp" />
+          <img :src="photo.jpeg" class="gallery-small-picture-fallback" /> 
+        </picture>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Picture from '@/components/Picture'
-
 export default {
   name: 'PhotoGallery',
-  components: {
-    Picture,
-  },
   data() {
     return {
       activeImage: this.photos[0],
@@ -56,6 +54,17 @@ export default {
       width: 100%;
       border-radius: 3px;
     }
+    &-picture {
+      display: flex;
+      &-fallback {
+        &[lazy=loading] {
+          width: 100px;
+          height: 100px;
+          margin: 100px auto;
+        }
+        width: 100%;
+      }
+    }
   }
   &-small {
     margin-top: 5px;
@@ -63,14 +72,18 @@ export default {
     max-width: 100%;
     overflow-x: scroll;
     cursor: pointer;
+    &-picture {
+      display: flex;
+    }
     &-container {
-      max-width: 70px;
+      max-width: 120px;
       margin-right: 5px;
       &-active {
         border: 1px solid $blue;
       }
     }
     &-image {
+      display: flex;
       width: 100%;
       border-radius: 3px;
     }

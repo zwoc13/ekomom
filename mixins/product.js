@@ -20,10 +20,20 @@ export default ({
     }
   },
   methods: {
-    addItem() {
+    addOption() {
+      this.product.options.push({
+        title: '',
+        items: [],
+        fillings: [],
+        fabrics: [],
+        price: 0,
+        discount: 0,
+      })
+    },
+    addItem(index) {
       const { item, qnt, size } = this.newItem
 
-      this.product.items.push({
+      this.product.options[index].items.push({
         item,
         qnt,
         size
@@ -33,16 +43,17 @@ export default ({
       this.newItem.qnt = 0
       this.newItem.size = ''
     },
-    deleteItem(name) { 
+    deleteItem(name, index) { 
       const { items } = this.product
-      const filteredItems = items.filter(item => item.item !== name)
+      const options = this.product.options[index]
+      const filteredItems = options.items.filter(item => item.item !== name)
 
-      this.product.items = filteredItems
+      this.product.options[index].items = filteredItems
     },
-    addFabric() {
+    addFabric(index) {
       const { forItem, what } = this.newFabric
 
-      this.product.fabrics.push({
+      this.product.options[index].fabrics.push({
         forItem,
         what
       })    
@@ -50,10 +61,10 @@ export default ({
       this.newFabric.forItem = ''
       this.newFabric.what = ''
     },
-    addFilling() {
+    addFilling(index) {
       const { forItem, what } = this.newFilling
 
-      this.product.fillings.push({
+      this.product.options[index].fillings.push({
         forItem,
         what
       })
@@ -61,17 +72,17 @@ export default ({
       this.newFilling.forItem = ''
       this.newFilling.what = ''
     },
-    deleteFabric(forItem, what) {
-      const { fabrics } = this.product
-      const index = fabrics.findIndex(fabric => fabric.forItem === forItem && fabric.what === what)
+    deleteFabric(forItem, what, index) {
+      const { fabrics } = this.product.options[index]
+      const fabricsIndex = fabrics.findIndex(fabric => fabric.forItem === forItem && fabric.what === what)
       
-      fabrics.splice(index, 1)
+      fabrics.splice(fabricsIndex, 1)
     },
-    deleteFilling(forItem, what) {
-      const { fillings } = this.product
-      const index = fillings.findIndex(filling => filling.forItem === forItem && filling.what === what)
+    deleteFilling(forItem, what, index) {
+      const { fillings } = this.product.options[index]
+      const fillingsIndex = fillings.findIndex(filling => filling.forItem === forItem && filling.what === what)
       
-      fillings.splice(index, 1)
+      fillings.splice(fillingsIndex, 1)
     }
   },
 })

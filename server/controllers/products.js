@@ -58,7 +58,7 @@ const getNewProducts = async (req, res, next) => {
     .find({ qnt: { $gt: 0 }})
     .sort({ createdAt: -1 })
     .limit(4)
-    .select('_id name category description price discount photos qnt')
+    .select('_id name category description price discount photos qnt options')
 
   return res.json({
     products: newProducts

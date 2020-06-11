@@ -29,72 +29,82 @@
               <label class="label">Кількість</label>
               <input type="number" class="input" v-model="product.qnt" />
             </div>
-            <div class="field column is-4">
-              <label class="label">Ціна</label>
-              <input type="number" class="input" v-model="product.price" />
-            </div>
-            <div class="field column is-4">
-              <label class="label">Акційна ціна</label>
-              <input type="number" class="input" v-model="product.discount" />
-            </div>
-            <div class="field column is-4">
-              <label class="label">Комплектація</label>
-              <div class="tags-container">
-                <div class="tag" v-if="product.items.length == 0">Поки нічого</div>
-                <div class="tag" :key="item.item + ' ' + item.size" v-for="item in product.items">
-                  {{ item.qnt }} x {{ item.item }} - {{ item.size }}
-                  <button class="delete is-small" @click="deleteItem(item.item)"></button>
+            <div class="options-container" :key="i" v-for="(option, i) in product.options">
+              <div class="field column is-4">
+                <label class="label">Назва комплектації</label>
+                <input type="text" class="input" v-model="product.options[i].title" />
+              </div>
+              <div class="field column is-4">
+                <label class="label">Ціна</label>
+                <input type="number" class="input" v-model="product.options[i].price" />
+              </div>
+              <div class="field column is-4">
+                <label class="label">Акційна ціна</label>
+                <input type="number" class="input" v-model="product.options[i].discount" />
+              </div>
+              <div class="field column is-4">
+                <label class="label">Комплектація</label>
+                <div class="tags-container">
+                  <div class="tag" v-if="product.options[i].items.length == 0">Поки нічого</div>
+                  <div class="tag" :key="item.item + ' ' + item.size" v-for="item in product.options[i].items">
+                    {{ item.qnt }} x {{ item.item }} - {{ item.size }}
+                    <button class="delete is-small" @click="deleteItem(item.item, i)"></button>
+                  </div>
                 </div>
-              </div>
-              <div class="tags-fast">
-                <div class="tags-fast-line" :key="tag.item + ' ' + tag.size + ' ' + tag.qnt" v-for="tag in fastItems" @click="addItemFast(tag)">{{ tag.item }} ({{tag.qnt}} шт.) - {{tag.size}} см</div>
-              </div>
-              <input type="text" class="input mini-form-input" v-model="newItem.item" placeholder="Назва" />
-              <input type="number" class="input mini-form-input" v-model="newItem.qnt" placeholder="Кількість" />
-              <input type="text" class="input mini-form-input" v-model="newItem.size" placeholder="Розмір (напр. 20х20)" />
-              <button class="button mini-form-button is-link" @click.prevent="addItem">Додати елемент</button>
-            </div>
-            <div class="field column is-4">
-              <label class="label">Використані тканини</label>
-              <div class="tags-container">
-                <div class="tag" v-if="product.fabrics.length == 0">Поки нічого</div>
-                <div class="tag" :key="fabric.for" v-for="fabric in product.fabrics">
-                  {{ fabric.forItem }} - {{ fabric.what }}
-                  <button class="delete is-small" @click.prevent="deleteFabric(fabric.forItem, fabric.what)"></button>
+                <div class="tags-fast">
+                  <div class="tags-fast-line" :key="tag.item + ' ' + tag.size + ' ' + tag.qnt" v-for="tag in fastItems" @click="addItemFast(tag, i)">{{ tag.item }} ({{tag.qnt}} шт.) - {{tag.size}} см</div>
                 </div>
+                <input type="text" class="input mini-form-input" v-model="newItem.item" placeholder="Назва" />
+                <input type="number" class="input mini-form-input" v-model="newItem.qnt" placeholder="Кількість" />
+                <input type="text" class="input mini-form-input" v-model="newItem.size" placeholder="Розмір (напр. 20х20)" />
+                <button class="button mini-form-button is-link" @click.prevent="addItem(i)">Додати елемент</button>
               </div>
-              <div class="select mini-form-input is-fullwidth">
-                <select v-model="newFabric.forItem">
-                  <option :key="item.item" v-for="item in product.items">{{ item.item }}</option>
-                </select>
-              </div>
-              <div class="select mini-form-input is-fullwidth">
-                <select v-model="newFabric.what">
-                  <option :key="fabric._id" v-for="fabric in fabrics">{{ fabric.name }}</option>
-                </select>
-              </div>
-              <button class="button mini-form-button is-link" @click.prevent="addFabric">Додати тканину</button>
-            </div>
-            <div class="field column is-4">
-              <label class="label">Використані наповнювачі</label>
-              <div class="tags-container">
-                <div class="tag" v-if="product.fillings.length == 0">Поки нічого</div>
-                <div class="tag" :key="filling.for" v-for="filling in product.fillings">
-                  {{ filling.forItem }} - {{ filling.what }}
-                  <button class="delete is-small" @click.prevent="deleteFilling(filling.forItem, filling.what)"></button>
+              <div class="field column is-4">
+                <label class="label">Використані тканини</label>
+                <div class="tags-container">
+                  <div class="tag" v-if="product.options[i].fabrics.length == 0">Поки нічого</div>
+                  <div class="tag" :key="fabric.for" v-for="fabric in product.options[i].fabrics">
+                    {{ fabric.forItem }} - {{ fabric.what }}
+                    <button class="delete is-small" @click.prevent="deleteFabric(fabric.forItem, fabric.what, index)"></button>
+                  </div>
                 </div>
+                <div class="select mini-form-input is-fullwidth">
+                  <select v-model="newFabric.forItem">
+                    <option :key="item.item" v-for="item in product.options[i].items">{{ item.item }}</option>
+                  </select>
+                </div>
+                <div class="select mini-form-input is-fullwidth">
+                  <select v-model="newFabric.what">
+                    <option :key="fabric._id" v-for="fabric in fabrics">{{ fabric.name }}</option>
+                  </select>
+                </div>
+                <button class="button mini-form-button is-link" @click.prevent="addFabric(i)">Додати тканину</button>
               </div>
-              <div class="select mini-form-input is-fullwidth">
-                <select v-model="newFilling.forItem">
-                  <option :key="item.item" v-for="item in product.items">{{ item.item }}</option>
-                </select>
+              <div class="field column is-4">
+                <label class="label">Використані наповнювачі</label>
+                <div class="tags-container">
+                  <div class="tag" v-if="product.options[i].fillings.length == 0">Поки нічого</div>
+                  <div class="tag" :key="filling.for" v-for="filling in product.options[i].fillings">
+                    {{ filling.forItem }} - {{ filling.what }}
+                    <button class="delete is-small" @click.prevent="deleteFilling(filling.forItem, filling.what, i)"></button>
+                  </div>
+                </div>
+                <div class="select mini-form-input is-fullwidth">
+                  <select v-model="newFilling.forItem">
+                    <option :key="item.item" v-for="item in product.options[i].items">{{ item.item }}</option>
+                  </select>
+                </div>
+                <div class="select mini-form-input is-fullwidth">
+                  <select v-model="newFilling.what">
+                    <option :key="filling._id" v-for="filling in fillings">{{ filling.name }}</option>
+                  </select>
+                </div>
+                <button class="button mini-form-button is-link" @click.prevent="addFilling(i)">Додати наповнювач</button>
               </div>
-              <div class="select mini-form-input is-fullwidth">
-                <select v-model="newFilling.what">
-                  <option :key="filling._id" v-for="filling in fillings">{{ filling.name }}</option>
-                </select>
-              </div>
-              <button class="button mini-form-button is-link" @click.prevent="addFilling">Додати наповнювач</button>
+            </div>
+            <div class="add-option" @click="addOption">
+              <span class="add-option-plus">+</span>
+              <span class="add-option-text">Додати опцію</span>
             </div>
             <div class="field column is-4">
               <div class="file">
@@ -147,13 +157,15 @@ export default {
         name: '',
         description: '',
         category: '',
-        fillings: [],
-        items: [],
-        fabrics: [],
         qnt: 1,
-        price: 0,
-        discount: 0,
         photos: [],
+        options: [{
+          fillings: [],
+          items: [],
+          fabrics: [],
+          price: 0,
+          discount: 0,
+        }]
       },
       fastItems: [
         { qnt: 1, item: 'Плед', size: '100x80' },
@@ -191,12 +203,14 @@ export default {
       product: {
         name: '',
         description: '', 
-        fillings: [],
-        items: [],
-        fabrics: [],
+        options: [{
+          fillings: [],
+          items: [],
+          fabrics: [],
+          price: 0,
+          discount: 0,
+        }],
         qnt: 1,
-        price: 0,
-        discount: 0,
         photos: [],
       }
     }
@@ -208,9 +222,9 @@ export default {
       const itemsList = items.map(item => item.item)
       return itemsList
     },
-    addItemFast(tag) {
+    addItemFast(tag, index) {
       const { item, qnt, size } = tag
-      this.product.items.push({
+      this.product.options[index].items.push({
         item,
         qnt,
         size,
@@ -237,16 +251,12 @@ export default {
         name,
         description,
         category,
-        items,
-        fillings,
-        fabrics,
+        options,
         qnt,
-        price,
-        discount,
         photos,
       } = this.product
 
-      if (items.length > 0 && photos.length > 0) {
+      if (options.length > 0 && photos.length > 0) {
         this.isLoading = true
 
         const products = await this.$axios.$post('/api/products', { ...this.product })
@@ -260,6 +270,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.add-option {
+  margin: 1rem 0;
+  padding: 2rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  flex: 0 0 100%;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid $sand;
+  transition: .4s;
+  &:hover {
+    background: $sand;
+  }
+  &-plus {
+    font-size: 30px;
+    color: green;
+    margin-right: 10px;
+  }
+  &-text {
+    font-size: 18px;
+    font-weight: bold;
+  }
+}
+.options-container {
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid $blue;
+  display: flex;
+  flex-wrap: wrap;
+}
 .tags {
   &-fast {
     display: flex;

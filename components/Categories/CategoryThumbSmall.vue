@@ -2,7 +2,7 @@
   <nuxt-link class="category-thumb" :to="url || `/shop/${category.url}`">
     <picture class="category-thumb-image" v-on="$listeners">
       <source :srcset="category.webp" type="image/webp" />
-      <img class="category-thumb-fallback" :src="category.jpeg" :alt="category.name" /> 
+      <img :src="category.jpeg" class="category-thumb-fallback" :alt="category.name" /> 
     </picture>
     <div class="category-thumb-container">
       {{ category.name }}

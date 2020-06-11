@@ -5,7 +5,7 @@
         <p class="category-thumb-name">{{ category.name }}</p>
         <picture class="category-thumb-image" v-on="$listeners">
           <source :srcset="category.webp" type="image/webp" />
-          <img class="category-thumb-fallback" :src="category.jpeg" :alt="alt" /> 
+          <img :src="category.jpeg" class="category-thumb-fallback" :alt="alt" /> 
         </picture>
       </div>
     </div>

@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="product-thumb-text-container">
-      <Price :price="thumb.price" :discount="thumb.discount" />
+      <Price :price="pickPrice(thumb.price)" :discount="thumb.discount" />
       <h5 class="product-thumb-title">{{ thumb.name }}</h5>
     </div>
   </nuxt-link>
@@ -32,6 +32,13 @@ export default {
     pickFirstImage(array) {
       const [ first ] = array
       return first
+    },
+    pickPrice() {
+      const product = this.thumb
+      const options = product.options
+      const prices = options.map(option => option.price)
+      const lowest = Math.min(...prices)
+      return lowest
     }
   }
 }
@@ -60,7 +67,11 @@ export default {
     z-index: 1;
   }  
   &-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-height: 100%;
+    min-width: 100%;
     @include mobile {
       max-height: 300px;
       object-fit: contain;
@@ -72,6 +83,7 @@ export default {
   &-image-container {
     position: relative;
     max-height: 100%;
+    width: 100%;
     overflow: hidden;
     height: 300px;
     display: flex;

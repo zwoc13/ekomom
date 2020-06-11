@@ -33,6 +33,14 @@
         <h2 class="product-name">{{ product.name }}</h2>
         <p class="product-description">{{ product.description }}</p>
         <div class="product-items-group">
+          <div class="product-items-group-title">Оберіть комплектацію</div>
+          <div class="select">
+            <select v-model="currentOption">
+              <option :key="option.title" :value="i" v-for="(option, i) in product.options">{{ option.title }}</option>
+            </select>
+          </div>
+        </div> 
+        <div class="product-items-group">
           <div class="product-items-group-title">В наявності</div>
           <div class='product-tag tag is-light is-medium'>{{ inStore(product.qnt) }}</div>
         </div>
@@ -41,7 +49,7 @@
           <div class="product-items-tags-container">
             <div 
               :key="el.size + ' ' + el.qnt + ' ' + el.item"
-              v-for="el in product.items" 
+              v-for="el in product.options[currentOption].items" 
               class="tag is-light is-medium">
               {{ el.item }} ({{ el.qnt }} шт.) — {{ el.size }} см
             </div>
@@ -52,7 +60,7 @@
           <div class="product-items-tags-container">
             <div
               :key="fabric"
-              v-for="fabric in fabrics"
+              v-for="fabric in uniqueFabrics(currentOption)"
               class="product-tag tag is-light is-medium"
             >
               {{ fabric }}
@@ -64,7 +72,7 @@
           <div class="product-items-tags-container">
             <div
               :key="filling"
-              v-for="filling in fillings"
+              v-for="filling in uniqueFillings(currentOption)"
               class="product-tag tag is-light is-medium"
             >
               {{ filling }}
@@ -72,8 +80,7 @@
           </div>
         </div>
         <div class="product-price" v-if="product.qnt > 0">
-          <div class="product-price-value" :class="{ 'product-price-value-small': product.discount > 0 }">{{ product.price }} ₴</div>
-          <div class="product-price-discount" v-if="product.discount > 0">{{ product.discount }} ₴</div>
+          <div class="product-price-value">{{ product.options[currentOption].discount || product.options[currentOption].price }} ₴</div>
         </div>
         <div class="product-price" v-if="product.qnt == 0">
           <div class="product-price-missing">Немає в наявності</div>
@@ -112,6 +119,7 @@ export default {
   data() {
     return {
       showModal: false,
+      currentOption: 0,
       phone: {
         error: '',
         value: '',
@@ -168,6 +176,32 @@ export default {
         false: 'Ні'
       }
       return settings[qnt > 0]
+    },
+    uniqueFillings(index) {
+      const options = this.product.options[index]
+      const uniqueFillings = []
+      options.fillings.forEach(filling => {
+        const alreadyInList = uniqueFillings.some(unique => unique.includes(filling.forItem))
+        if (!alreadyInList) {
+          const fillingsList = options.fillings.filter(f => f.forItem === filling.forItem).map(f => f.what)
+          uniqueFillings.push(filling.forItem + ' - ' + fillingsList.join(', '))
+        }
+      })
+
+      return uniqueFillings
+    },
+    uniqueFabrics(index) {
+      const options = this.product.options[index]
+      const uniqueFabrics = []
+      options.fabrics.forEach(fabric => {
+        const alreadyInList = uniqueFabrics.some(unique => unique.includes(fabric.forItem))
+        if (!alreadyInList) {
+          const fabricsList = options.fabrics.filter(f => f.forItem === fabric.forItem).map(f => f.what)
+          uniqueFabrics.push(fabric.forItem + ' - ' + fabricsList.join(', '))
+        }
+      })
+
+      return uniqueFabrics
     }
   },
   async asyncData({ $axios, params }) {
@@ -175,27 +209,8 @@ export default {
     const { product } = await $axios.$get(`/api/products/${id}`)
     const { products: relativeProducts } = await $axios.$get(`/api/products/relative/${id}`)
 
-    const uniqueFillings = []
-    product.fillings.forEach(filling => {
-      const alreadyInList = uniqueFillings.some(unique => unique.includes(filling.forItem))
-      if (!alreadyInList) {
-        const fillingsList = product.fillings.filter(f => f.forItem === filling.forItem).map(f => f.what)
-        uniqueFillings.push(filling.forItem + ' - ' + fillingsList.join(', '))
-      }
-    })
-
-    const uniqueFabrics = []
-    product.fabrics.forEach(fabric => {
-      const alreadyInList = uniqueFabrics.some(unique => unique.includes(fabric.forItem))
-      if (!alreadyInList) {
-        const fabricsList = product.fabrics.filter(f => f.forItem === fabric.forItem).map(f => f.what)
-        uniqueFabrics.push(fabric.forItem + ' - ' + fabricsList.join(', '))
-      }
-    })
     return {
       product,
-      fillings: uniqueFillings,
-      fabrics: uniqueFabrics,
       relativeProducts,
     }
   },

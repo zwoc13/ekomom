@@ -18,7 +18,6 @@
         <nuxt-link :to="`/shop/product/${product._id}`" class="header-search-product" :key="product._id" v-for="product in products">
           <picture class="header-search-product-image">
             <source :srcset="product.photos[0].webp" type="image/webp" />
-            <source :srcset="product.photos[0].jpeg" type="image/jpeg" />
             <img :src="product.photos[0].jpeg" />
           </picture>
           <div class="header-search-product-text">
@@ -26,8 +25,7 @@
             <div class="header-search-product-description">{{ formatDescription(product.description) }}</div>
           </div>
           <div class="header-search-product-price">
-            <div class="header-search-product-value" :class="{ 'header-search-product-value-crossed': product.discount > 0 }">{{ product.price }} ₴</div>
-            <div class="header-search-product-discount" v-if="product.discount > 0">{{ product.discount }} ₴</div>
+            <div class="header-search-product-value">{{ formatPrice(product.options) }}</div>
           </div>
         </nuxt-link>
       </div>
@@ -58,7 +56,30 @@ export default {
       this.makeSearch(value)
     }, 500),
     formatDescription(string) {
-      return string.slice(0, 27) + '...'
+      if (string.length > 26) {
+        return string.slice(0, 27) + '...'
+      } else {
+        return string
+      }
+    },
+    formatPrice(optionsList) {
+      const pricesList = optionsList.map(option => {
+        const { price, discount } = option
+        if (discount > 0) {
+          return discount
+        } else {
+          return price
+        }
+      })
+      
+      if (pricesList.length > 1) {
+        const lowest = Math.min(...pricesList)
+
+        return `${lowest} ₴`
+      } else {
+        return pricesList[0] + ' ₴'
+      }
+
     }
   }
 }

@@ -2,7 +2,6 @@
   <div class="cart-item">
     <picture class="cart-item-image">
       <source :srcset="product.photos[0].webp" type="image/webp" />
-      <source :srcset="product.photos[0].jpeg" type="image/jpeg" />
       <img :src="product.photos[0].jpeg" />
     </picture>
     <div class="cart-item-text">

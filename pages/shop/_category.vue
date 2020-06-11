@@ -91,6 +91,11 @@ export default {
     &-list {
       border-bottom: 1px solid $grey;
       flex-wrap: wrap;
+
+      .picture-fallback {
+        height: 40px;
+        width: 40px;
+      }
     }
   }
   &-category-description {

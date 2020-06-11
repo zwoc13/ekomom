@@ -1,7 +1,7 @@
 <template>
   <picture class="picture" v-on="$listeners">
-    <source :srcset="image.webp" type="image/webp" />
-    <img class="picture-fallback" :src="image.jpeg" :alt="alt" /> 
+    <source :srcset="image.webp" class="picture-webp" type="image/webp" />
+    <img :src="image.jpeg" class="picture-fallback" :alt="alt" /> 
   </picture>
 </template>
 
@@ -13,8 +13,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.picture-webp[lazy=loading] {
+  display: none;
+}
+.picture-fallback[lazy=loading] {
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .picture {
-  display: flex;
+  position: relative;
   &-fallback {
     height: auto;
     width: auto;
