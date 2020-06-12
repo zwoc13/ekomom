@@ -20,8 +20,8 @@
                 <tr :key="product._id" v-for="product in products">
                   <td>{{ product.name }}</td>
                   <td>{{ category(product.category) }}</td>
-                  <td>{{ product.price }}</td>
-                  <td>{{ product.discount }}</td>
+                  <td>{{ pickPrice(product) }}</td>
+                  <td>{{ pickDiscount(product) }}</td>
                   <td><nuxt-link :to="`/admin/products/edit/${product._id}`" >Редагувати</nuxt-link></td>
                   <td><a class="delete is-small" @click="deleteProduct(product._id)" /></td>
                 </tr>
@@ -71,6 +71,14 @@ export default {
     }
   },
   methods: {
+    pickPrice(product) {
+      const prices = product.options.map(option => option.price)
+      return Math.min(...prices)
+    },
+    pickDiscount(product) {
+      const discounts = product.options.map(option => option.discount)
+      return Math.min(...discounts)
+    },
     async deleteProduct(id) {
       this.isLoading = true
 

@@ -35,11 +35,11 @@
               </div>
               <div class="field column is-4">
                 <label class="label">Ціна</label>
-                <input type="number" class="input" v-model="product.price" />
+                <input type="number" class="input" v-model="product.options[i].price" />
               </div>
               <div class="field column is-4">
                 <label class="label">Акційна ціна</label>
-                <input type="number" class="input" v-model="product.discount" />
+                <input type="number" class="input" v-model="product.options[i].discount" />
               </div>
               <div class="field column is-4">
                 <label class="label">Комплектація</label>
