@@ -41,7 +41,10 @@
                 <div class="order-products-td qnt">Кількість на складі</div>
                 <div class="order-products-td remove">Видалити</div>
               </div>
-              <OrderProduct :key="product._id" v-for="product in products" :product="product" />
+              <OrderProduct :key="product.id" v-for="product in products" :product="product" />
+              <div class="order-products-footer">
+                Загальна вартість: {{ total }} грн
+              </div>
             </div>
           </div>
         </div>
@@ -78,11 +81,23 @@ export default {
     const productsPromises = order.products.map(async orderProduct => {
       const id = orderProduct.id
       const { product } = await $axios.$get(`/api/products/${id}`)
-      return product
+      const option = product.options.find(option => option.title === orderProduct.title)
+      return {
+        id,
+        name: product.name,
+        title: orderProduct.title,
+        photos: product.photos,
+        price: option.price,
+        discount: option.discount,
+        qnt: product.qnt,
+      }
     })
     const products = await Promise.all(productsPromises)
+    
+    const total = products.reduce((acc, value) => acc + value.price, 0)
 
     return {
+      total,
       order,
       products,
     }
@@ -127,6 +142,11 @@ export default {
       justify-content: space-between;
       padding-bottom: 10px;
       border-bottom: 1px solid #333;
+    }
+    &-footer {
+      margin-top: 20px;
+      border-top: 1px solid #333;
+      font-size: 20px;
     }
     &-td {
       &.photo { flex: 0 0 70px; }

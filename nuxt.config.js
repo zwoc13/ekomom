@@ -50,8 +50,8 @@ module.exports = {
     '@nuxtjs/pwa',
     '@nuxtjs/dotenv',
     [ 'nuxt-vuex-localstorage', {
-      ...(isDev && {
-        mode: 'debug'
+      ...isDev && ({
+        debug: true
       }),
       localStorage: ['cart'],
     }]

@@ -44,7 +44,7 @@ const updateUser = (req, res, next) => {
   const id = req.params.user_id
   const props = req.body.user
 
-  User.update(id, props)
+  User.updateOne(id, props)
     .then(user => {
       return res.json({
         ok: true,

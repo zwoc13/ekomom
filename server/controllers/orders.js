@@ -4,9 +4,9 @@ const Product = require('../models/order')
 const createOrder = async (req, res, next) => {
   const props = req.body
   const productsList = props.products
-  const ids = productsList.map(product => product.id)
-  const productPromises = ids.map(async (id) => {
-    return await Product.update({ _id: id }, { $inc: { qnt: -1 }})
+  const productPromises = productsList.map(async product => {
+    const { id } = product
+    return await Product.updateOne({ _id: id }, { $inc: { qnt: -1 }})
   })
 
   const productsUpdated = await Promise.all(productPromises)

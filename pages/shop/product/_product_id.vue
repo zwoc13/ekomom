@@ -87,8 +87,8 @@
         </div>
         <div class="product-buttons" v-if="product.qnt > 0">
           <nuxt-link to="/checkout" class="button is-medium" v-if="isAdded">Перейти до покупки</nuxt-link>
-          <button class="button product-cart is-medium" v-if="!isAdded" @click="addToCart(product)">Додати в корзину</button>
-          <button class="button product-buy is-medium" v-if="!isAdded" @click="fastBuy(product)">Купити в один клік</button>
+          <button class="button product-cart is-medium" v-if="!isAdded" @click="addToCart(product, currentOption)">Додати в корзину</button>
+          <button class="button product-buy is-medium" v-if="!isAdded" @click="fastBuy(product, currentOption)">Купити в один клік</button>
         </div>
         <div class="product-buttons product-buttons-wide" v-if="product.qnt == 0">
           <button class="button product-check is-medium" @click="openModal">Уточнити можливість повторного пошиву</button>
@@ -124,7 +124,7 @@ export default {
         error: '',
         value: '',
         done: false,
-      }
+      },
     }
   },
   computed: {
@@ -137,10 +137,15 @@ export default {
   },
   methods: {
     ...mapActions({
-      addToCart: 'cart/addProduct',
+      addProduct: 'cart/addProduct',
       removeFromCart: 'cart/removeProduct',
     }),
-    async fastBuy(product) {
+    async addToCart(product, optionIndex) {
+      product['optionIndex'] = optionIndex
+      await this.addProduct(product)
+    },
+    async fastBuy(product, optionIndex) {
+      product['optionIndex'] = optionIndex
       await this.addToCart(product)
       this.$router.replace('/checkout')
     },

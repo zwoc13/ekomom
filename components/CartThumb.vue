@@ -6,11 +6,11 @@
     </picture>
     <div class="cart-item-text">
       <div class="cart-item-title">{{ product.name }}</div>
+      <div class="cart-item-option">Комплектація: {{ product.options[product.optionIndex].title }}</div>
       <div class="cart-item-description">{{ formatDescription(product.description) }}</div>
     </div>
     <div class="cart-item-price">
-      <div class="cart-item-value" :class="{ 'cart-item-value-crossed': product.discount > 0}">{{ product.price }} ₴</div>
-      <div class="cart-item-discount" v-if="product.discount > 0">{{ product.discount }} ₴</div>
+      <div class="cart-item-value">{{ product.options[product.optionIndex].price }} ₴</div>
     </div>
     <div class="cart-item-remove" @click="removeProduct(product._id)">&times;</div>
   </div>
@@ -31,7 +31,7 @@ export default {
       removeProduct: 'cart/removeProduct'
     }),
     formatDescription(string) {
-      return string.slice(0, 27) + ',,,'
+      return string.length > 27 ? string.slice(0, 27) + '...' : string
     }
   }
 }

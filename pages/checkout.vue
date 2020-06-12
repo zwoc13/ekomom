@@ -78,7 +78,7 @@
         <div class="checkout-right column is-6">
           <h1 class="checkout-title">Замовлені товари</h1>
           <div class="checkout-products">
-            <client-only>
+            <client-only placeholder="Loading...">
               <CartThumb
                 :key="product._id" 
                 v-for="product in cartProducts" 
@@ -158,6 +158,22 @@ export default {
         this.$store.commit('cart/setCity', value)
       }
     },
+    cityName: {
+      get() {
+        return this.user.cityName
+      },
+      set(value) {
+        this.$store.commit('cart/setCityName', value)
+      }
+    },
+    cityReference: {
+      get() {
+        return this.user.cityReference
+      },
+      set(value) {
+        this.$store.commit('cart/setCityReference', value)
+      }
+    },
     warehouse: {
       get() {
         return this.user.warehouse
@@ -166,18 +182,6 @@ export default {
         this.$store.commit('cart/setWarehouse', value)
       }
     },
-    total() {
-      const products = this.cartProducts
-      let total = 0
-      products.forEach(product => {
-        if (product.discount > 0) {
-          total += product.discount
-        } else {
-          total += product.price
-        }
-      })
-      return total
-    }
   },
   async asyncData({ store }) {
     await store.dispatch('cart/getTotal')
@@ -196,8 +200,8 @@ export default {
       }
     },
     async placeOrder() {
-      const { name, phone, city, warehouse } = this
-      const { cityName, cityReference, paymentType, comment } = this.order
+      const { name, phone, city, cityName, cityReference, warehouse, total } = this
+      const { paymentType, comment } = this.order
       const phoneRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/ig
       
       await this.dropErrors()
@@ -212,7 +216,7 @@ export default {
       const noErrors = Object.values(this.errors).every(field => field.length == 0)
       
       if (noErrors) {
-        await this.createOrder({ name, phone, city, cityName, cityReference, warehouse, paymentType, comment, products: this.cartProducts })
+        await this.createOrder({ name, phone, city, cityName, cityReference, warehouse, paymentType, comment, products: this.cartProducts, total })
         this.$router.replace('/confirmed')
       }
     },
@@ -220,7 +224,7 @@ export default {
       this.order.paymentType = type
     },
     searchCity() {
-      const { city } = this.order
+      const { city } = this
       this.$axios.$post(`/api/cities/search`, { city })
         .then(({ cities }) => {
           this.np.cities = cities
@@ -230,7 +234,7 @@ export default {
         })
     },
     findWarehouse() {
-      const { warehouse } = this.order
+      const { warehouse } = this
       const pattern = new RegExp(warehouse, 'ig')
       const filteredWarehouses = this.np.allWarehouses.filter(w => {
         return w.Description.match(pattern)
@@ -238,7 +242,7 @@ export default {
       this.np.warehouses = filteredWarehouses
     },
     searchWarehouse() {
-      const { cityName } = this.order
+      const { cityName } = this
       this.$axios.$post('/api/warehouses/search', { city: cityName })
         .then(({ warehouses }) => {
           this.np.allWarehouses = warehouses
@@ -249,13 +253,13 @@ export default {
         })
     },
     setCity(city) {
-      this.order.city = city.Present
-      this.order.cityName = city.MainDescription
-      this.order.cityReference = city.Ref
+      this.city = city.Present
+      this.cityName = city.MainDescription
+      this.cityReference = city.Ref
       this.np.cities = []
     },
     setWarehouse(warehouse) {
-      this.order.warehouse = warehouse.Description
+      this.warehouse = warehouse.Description
       this.np.warehouses = []
     },
   }

@@ -1,9 +1,10 @@
 <template>
   <div class="product">
-    <nuxt-link :to="`/shop/product/${product._id}`">
-      <Picture class="product-image" :image ="product.photos[0]" />
-    </nuxt-link>
-    <div class="product-name">{{ product.name }}</div>
+    <picture class="product-picture">
+      <source :srcset="product.photos[0].webp" class="product-picture-webp" type="image/webp" />
+      <img :src="product.photos[0].jpeg" class="product-picture-fallback" /> 
+    </picture>
+    <div class="product-name">{{ product.name }} (комплектація {{product.title}})</div>
     <div class="product-price">{{ product.price }}</div>
     <div class="product-discount">{{ product.discount }}</div>
     <div class="product-qnt">{{ product.qnt }}</div>
@@ -19,7 +20,7 @@ import Picture from '@/components/Picture'
 export default {
   name: 'OrderProduct',
   components: { Picture },
-  props: [ 'product', 'remove' ],
+  props: [ 'product', 'remove' ]
 }
 </script>
 
@@ -29,8 +30,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   margin-top: 10px; 
-  &-image {
-    width: 70px;
+  &-picture {
     flex: 0 0 70px;
   }
   &-name {

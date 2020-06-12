@@ -1,12 +1,19 @@
 export const state = () => ({
   products: [],
-  user: {},
+  user: {
+    name: '',
+    phone: '',
+    city: '',
+    cityName: '',
+    cityReference: '',
+    warehouse: '',
+  },
   total: 0,
-  version: '0.0.1',
+  version: '1',
 })
 
 export const mutations = {
-  addProduct(state, product) {
+  addProduct(state, product, optionIndex) {
     if (!state.products.find(p => p._id === product._id)) {
       state.products = [ ...state.products, product ]
     }
@@ -34,13 +41,28 @@ export const mutations = {
   setCity(state, city) {
     state.user.city = city
   },
+  setCityName(state, cityName) {
+    state.user.cityName = cityName
+  },
+  setCityReference(state, cityReference) {
+    state.user.cityReference = cityReference
+  },
   setWarehouse(state, warehouse) {
     state.user.warehouse = warehouse
   },
   setTotal(state) {
     let total = 0
     const products = state.products
-    products.forEach(product => product.discount > 0 ? total += product.discount : total += product.price)
+    products.forEach(product => {
+      const option = product.options[product.optionIndex]
+      const price = option.price
+      const discount = price.discount
+      if (discount) {
+        total += discount
+      } else {
+        total += price
+      }
+    })
     state.total = total
   },
   clearStorage(state) {
@@ -54,30 +76,35 @@ export const actions = {
   },
   async addProduct({ commit }, product) {
     await commit('addProduct', product)
+    await commit('setTotal')
   },
   async removeProduct({ commit }, id) {
     await commit('removeProduct', id)
   },
   async createOrder({ commit }, order) {
-    await commit('setUser', { ...order })
-    await commit('clearStorage')
-
     const dbOrder = {
       name: order.name,
       phone: order.phone,
       city: order.city,
       warehouse: order.warehouse,
       paymentType: order.paymentType,
-      products: order.products.map(product => ({
-        id: product._id,
-        discount: product.discount,
-        price: product.price,
-        name: product.name,
-      })),
+      products: order.products.map(product => {
+        const options = product.options[product.optionIndex]
+        return {
+          id: product._id,
+          price: options.price,
+          discount: options.price,
+          title: options.title,
+          name: product.name,
+        }
+      }),
       comment: order.comment,
+      total: order.total,
     }
 
     await this.$axios.$post('/api/notify', { ...dbOrder })
     await this.$axios.$post('/api/orders', { ...dbOrder })
+
+    await commit('clearStorage')
   }
 }
