@@ -61,7 +61,7 @@
             <div
               :key="fabric"
               v-for="fabric in uniqueFabrics(currentOption)"
-              class="product-tag tag is-light is-medium"
+              class="tag is-light is-medium"
             >
               {{ fabric }}
             </div>
@@ -292,7 +292,12 @@ export default {
     width: 100%;
   }
   &-tag {
+    max-width: 100%;
+    white-space: normal;
     margin-right: .5rem;
+    @include mobile {
+      height: fit-content;
+    }
   }
   &-name {
     font-size: 22px;

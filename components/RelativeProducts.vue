@@ -2,7 +2,7 @@
   <div class="relative">
     <h3 class="relative-title">Схожі товари</h3>
     <div class="columns relative-wrap">
-      <ProductThumb :key="product._id" v-for="product in products" :thumb="product" class="column is-2" />
+      <ProductThumb :key="product._id" v-for="product in products" :thumb="product" class="column is-2 is-10-mobile is-offset-1-mobile" />
     </div>
   </div>
 </template>

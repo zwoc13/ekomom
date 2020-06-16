@@ -17,7 +17,7 @@ module.exports = (passport) => {
     (email, password, done) => {
       User.findOne({ email }, (err, user) => {
         if (err) return done(err)
-        if (!user) return done(null, false, { message: 'Nu user found '})
+        if (!user) return done(null, false, { message: 'No user found '})
         user.comparePassword(password, (err, isMatch) => {
           if (err) return done(err)
           if (!isMatch) return done(null, false, { message: 'Incorrect password' })

@@ -76,7 +76,8 @@ export default {
       display: flex;
     }
     &-container {
-      max-width: 120px;
+      width: 120px;
+      height: 100%;
       margin-right: 5px;
       &-active {
         border: 1px solid $blue;

@@ -78,5 +78,8 @@ export default {
       line-height: 14px;
     }
   }
+  @include mobile {
+    display: none;
+  }
 }
 </style>
