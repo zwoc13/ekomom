@@ -5,7 +5,6 @@ const isDev = process.env.NODE_ENV !== 'production'
 const getRoutes = require('./utils/routes')
 
 module.exports = {
-  mode: 'universal',
   ...(!isDev && {
     modern: 'client'
   }),
